@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Voter List</title>
+<style>
+body{font-family:system-ui;padding:1rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{border:1px solid #ddd;padding:5px}
+button{padding:8px 12px;margin:4px;background:#1a73e8;color:#fff;border:none;border-radius:6px}
+@media print { button, a { display:none } }
+</style>
+</head>
+<body>
+<a href="/home">← Back</a>
+<h3>Voter List</h3>
+<button onclick="window.print()">Print</button>
+<button onclick="exportCSV()">Export CSV</button>
+<table id="t"><tr><th>Name</th><th>Father</th><th>Phone</th><th>Booth</th><th>Village</th><th>Tag</th></tr></table>
+<script>
+let voterData = [];
+fetch('/api/voters').then(r=>r.json()).then(rows=>{
+  voterData = rows;
+  const t = document.getElementById('t');
+  rows.forEach(r => {
+    const tr = t.insertRow();
+    for(let i=0;i<6;i++) tr.insertCell().innerText = r[i] || '';
+  });
+});
+function exportCSV(){
+  let csv = 'Name,Father,Phone,Booth,Village,Tag\n';
+  voterData.forEach(r => csv += r.slice(0,6).map(c=>'"'+(c||'')+'"').join(',') + '\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'voters.csv';
+  a.click();
+}
+</script>
+</body></html>

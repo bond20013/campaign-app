@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Publicity</title>
+<style>body{font-family:system-ui;padding:1rem}input{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}button{width:100%;padding:12px;background:#1a73e8;color:#fff;border:none;border-radius:8px}</style>
+</head>
+<body>
+<a href="/home">← Back</a>
+<h3>Publicity Expense</h3>
+<input type="date" id="date">
+<input id="item" placeholder="Item (Banner, Pamphlet...)">
+<input id="vendor" placeholder="Vendor Name">
+<input id="phone" placeholder="Vendor Phone">
+<input type="number" id="units" placeholder="No. of Units">
+<input type="number" id="rate" placeholder="Per Unit Cost">
+<button onclick="alert('Publicity save coming next');location.href='/home'">Save</button>
+<script>document.getElementById('date').valueAsDate=new Date();</script>
+</body>
+</html>

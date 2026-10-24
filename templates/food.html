@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Expense</title>
+<style>
+body{font-family:system-ui;background:#f4f6f8;padding:1rem;margin:0}
+input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{background:#1a73e8;color:#fff;border:none;padding:12px;border-radius:8px;width:100%}
+</style>
+</head>
+<body>
+<a href="/home">← Back</a>
+<h3>Food - Chef & Team</h3>
+<label>Date</label><input type="date" id="date">
+<label>Chef Name</label><input id="chef">
+<label>Attendance</label><select id="att"><option>Present</option><option>Absent</option></select>
+<label>Chef Daily Rate</label><input type="number" id="chefRate" value="3000">
+<label>Team Members</label><input type="number" id="team" value="0">
+<label>Team Rate</label><input type="number" id="teamRate" value="0">
+<label>Cylinders</label><input type="number" id="cyl" value="0">
+<label>Cylinder Rate</label><input type="number" id="cylRate" value="0">
+<label>Raw Material</label><input type="number" id="raw" value="0">
+<button onclick="save()">Save</button>
+<script>
+document.getElementById('date').valueAsDate = new Date();
+function save(){
+  const data = {
+    date: document.getElementById('date').value,
+    chef: document.getElementById('chef').value,
+    attendance: document.getElementById('att').value,
+    chefRate: document.getElementById('chefRate').value,
+    team: document.getElementById('team').value,
+    teamRate: document.getElementById('teamRate').value,
+    cylinders: document.getElementById('cyl').value,
+    cylRate: document.getElementById('cylRate').value,
+    raw: document.getElementById('raw').value,
+    total: 0
+  };
+  data.total = (+data.chefRate) + (+data.team * +data.teamRate) + (+data.cylinders * +data.cylRate) + (+data.raw);
+  fetch('/api/save-food',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    .then(()=>{alert('Saved'); location.href='/home';});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Volunteers</title>
+<style>body{font-family:system-ui;padding:1rem}input,textarea{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}button{width:100%;padding:12px;background:#1a73e8;color:#fff;border:none;border-radius:8px}</style></head>
+<body><a href="/home">← Back</a><h3>Volunteer Payment</h3>
+<input type="date" id="date"><input id="name" placeholder="Name"><textarea id="purpose" placeholder="Purpose / Reason"></textarea><input type="number" id="amount" placeholder="Amount">
+<button onclick="save()">Save</button>
+<script>
+document.getElementById('date').valueAsDate=new Date();
+function save(){
+  fetch('/api/save-volunteer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    date:document.getElementById('date').value, name:document.getElementById('name').value,
+    purpose:document.getElementById('purpose').value, amount:document.getElementById('amount').value
+  })}).then(()=>{alert('Saved');location.href='/home'});
+}
+</script></body></html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Give Advance</title>
+<style>body{font-family:system-ui;padding:1rem}input{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}button{width:100%;padding:12px;background:#1a73e8;color:#fff;border:none;border-radius:8px}</style></head>
+<body><a href="/home">← Back</a><h3>Give Advance to Manager</h3>
+<input type="date" id="date"><input id="manager" placeholder="Manager User ID"><input type="number" id="amount" placeholder="Amount"><input id="remarks" placeholder="Remarks">
+<button onclick="save()">Give Advance</button>
+<script>
+document.getElementById('date').valueAsDate=new Date();
+function save(){
+  fetch('/api/save-advance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    date:document.getElementById('date').value, manager:document.getElementById('manager').value,
+    amount:document.getElementById('amount').value, remarks:document.getElementById('remarks').value
+  })}).then(()=>{alert('Advance given');location.href='/home'});
+}
+</script></body></html>

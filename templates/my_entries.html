@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Entries</title>
+<style>body{font-family:system-ui;padding:1rem;background:#f4f6f8} .card{background:#fff;padding:1rem;margin:.5rem 0;border-radius:10px;font-size:14px}</style></head>
+<body><a href="/home">← Back</a><h3>My Entries</h3>
+<p style="font-size:13px;color:#666">Administrator and Senior Manager can edit any entry directly in the Google Sheet.</p>
+<div id="list">Loading...</div>
+<script>
+fetch('/api/my-entries').then(r=>r.json()).then(data=>{
+  const el = document.getElementById('list');
+  if(!data.length){ el.innerHTML='No entries yet'; return; }
+  el.innerHTML = data.map(e => `<div class="card"><b>${e.sheet}</b><br>${e.data.slice(0,-1).join(' | ')}</div>`).join('');
+});
+</script></body></html>

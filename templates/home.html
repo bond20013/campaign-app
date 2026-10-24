@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#f4f6f8;margin:0;padding:1rem}
+.header{background:#1a73e8;color:#fff;padding:1rem;border-radius:12px}
+.balance{background:#0f9d58;color:#fff;padding:1.2rem;border-radius:12px;margin:1rem 0;font-size:1.3rem}
+.btn{display:block;background:#fff;padding:1rem;margin:.6rem 0;border-radius:10px;text-decoration:none;color:#222;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.logout{text-align:center;margin-top:2rem}
+</style>
+</head>
+<body>
+<div class="header"><strong>{{ user.name }}</strong><br><small>{{ user.role }} {% if user.head %}({{ user.head }}){% endif %}</small></div>
+<div class="balance" id="bal">Balance in Hand: Loading...</div>
+{% if user.role in ['Administrator', 'Senior Manager'] %}
+<a class="btn" href="/advance">Give Advance</a>
+<a class="btn" href="/reports">Reports / Master</a>
+<a class="btn" href="/voters">Voter List</a>
+{% endif %}
+<a class="btn" href="/vehicle">Vehicle</a>
+<a class="btn" href="/food">Food</a>
+<a class="btn" href="/publicity">Publicity</a>
+<a class="btn" href="/office">Office & Stationery</a>
+<a class="btn" href="/volunteers">Volunteers</a>
+<a class="btn" href="/social">Social Media</a>
+<a class="btn" href="/misc">Miscellaneous</a>
+<a class="btn" href="/my-entries">My Entries</a>
+<div class="logout"><a href="/logout">Logout</a></div>
+<script>
+fetch('/api/balance').then(r=>r.json()).then(d=>{
+  document.getElementById('bal').innerHTML = `Balance in Hand: ₹${d.balance.toFixed(0)}<br><small>Advance ₹${d.advance} | Spent ₹${d.spent}</small>`;
+});
+</script>
+</body>
+</html>

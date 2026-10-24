@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vehicle Attendance</title>
+<style>
+body{font-family:system-ui;background:#f4f6f8;padding:1rem;margin:0}
+.top{background:#0f9d58;color:#fff;padding:.8rem;border-radius:10px;margin-bottom:1rem}
+input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{background:#1a73e8;color:#fff;border:none;padding:12px;border-radius:8px;width:100%;margin-top:10px}
+.vehicle{background:#fff;padding:1rem;margin:.5rem 0;border-radius:10px}
+</style>
+</head>
+<body>
+<a href="/home">← Back</a>
+<h3>Vehicle Attendance</h3>
+<div class="top">Balance in Hand: ₹0</div>
+<label>Date</label><input type="date" id="date" value="{{ now }}">
+<div id="list"></div>
+<button onclick="save()">Save Attendance</button>
+<script>
+document.getElementById('date').valueAsDate = new Date();
+fetch('/api/vehicles').then(r=>r.json()).then(data=>{
+  const el = document.getElementById('list');
+  data.forEach(v => {
+    el.innerHTML += `<div class="vehicle"><b>${v[0]}</b> - ${v[1]||''}<br>
+      <select id="att_${v[0]}"><option>Present</option><option>Absent</option></select>
+      Fuel (₹): <input type="number" id="fuel_${v[0]}" value="0">
+    </div>`;
+  });
+});
+function save(){
+  const date = document.getElementById('date').value;
+  document.querySelectorAll('.vehicle').forEach(div=>{
+    const num = div.querySelector('b').innerText;
+    const att = document.getElementById('att_'+num).value;
+    const fuel = document.getElementById('fuel_'+num).value || 0;
+    if(att==='Present'){
+      fetch('/api/save-attendance',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({date,vehicle:num,attendance:att,fuel,total:fuel})});
+    }
+  });
+  alert('Saved');
+  location.href='/home';
+}
+</script>
+</body>
+</html>
